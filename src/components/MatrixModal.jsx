@@ -162,31 +162,29 @@ export default function MatrixModal({ filters, onClose }) {
           )}
         </div>
 
-        <div className="flex items-center justify-between px-6 py-4 border-t border-dash-border shrink-0">
-          <div className="flex gap-3">
+        <div className="flex items-center justify-center px-6 py-4 border-t border-dash-border shrink-0 gap-4">
+          <button
+            onClick={() => descargarPDF('boton1.pdf')}
+            className="px-6 py-3 text-sm font-bold uppercase tracking-wider bg-[#3b82f6] text-white border-2 border-[#2563eb] rounded-xl hover:bg-[#2563eb] transition-all"
+          >
+            DESCARGAR PDF
+          </button>
+          {!showCuestionario && (
             <button
-              onClick={() => descargarPDF('boton1.pdf')}
-              className="px-6 py-3 text-sm font-bold uppercase tracking-wider bg-[#3b82f6] text-white border-2 border-[#2563eb] rounded-xl hover:bg-[#2563eb] transition-all"
+              onClick={() => setShowCuestionario(true)}
+              className="px-6 py-3 text-sm font-bold uppercase tracking-wider bg-[#f4a261] text-white border-2 border-[#e8944e] rounded-xl hover:bg-[#e8944e] transition-all"
             >
-              DESCARGAR PDF
+              CUESTIONARIO
             </button>
-            {!showCuestionario && (
-              <button
-                onClick={() => setShowCuestionario(true)}
-                className="px-6 py-3 text-sm font-bold uppercase tracking-wider bg-[#f4a261] text-white border-2 border-[#e8944e] rounded-xl hover:bg-[#e8944e] transition-all"
-              >
-                CUESTIONARIO
-              </button>
-            )}
-            <button
-              onClick={() => descargarPDF('boton2.pdf')}
-              className="px-6 py-3 text-sm font-bold uppercase tracking-wider bg-[#22c55e] text-white border-2 border-[#16a34a] rounded-xl hover:bg-[#16a34a] transition-all"
-            >
-              DESCARGAR MATRIZ
-            </button>
-          </div>
-          <span className="text-[10px] text-dash-muted">
-            Total elementos: {activeCategories.reduce((s, c) => s + c.items.filter((i) => filters[c.id]?.[i.id]).length, 0)}
+          )}
+          <button
+            onClick={() => descargarPDF('boton2.pdf')}
+            className="px-6 py-3 text-sm font-bold uppercase tracking-wider bg-[#22c55e] text-white border-2 border-[#16a34a] rounded-xl hover:bg-[#16a34a] transition-all"
+          >
+            DESCARGAR MATRIZ
+          </button>
+          <span className="text-[10px] text-dash-muted ml-4">
+            Total: {activeCategories.reduce((s, c) => s + c.items.filter((i) => filters[c.id]?.[i.id]).length, 0)}
           </span>
         </div>
       </div>

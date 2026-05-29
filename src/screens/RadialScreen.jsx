@@ -1,11 +1,9 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import RadialChart from '../components/RadialChart';
-import MatrixModal from '../components/MatrixModal';
 import { amenazasCaracterizadas } from '../data';
 
 export default function RadialScreen({ filters, onBack }) {
-  const [showMatrix, setShowMatrix] = useState(false);
   const [activeAmenaza, setActiveAmenaza] = useState(null);
   const [revealed, setRevealed] = useState(new Set());
   const [chartDone, setChartDone] = useState(false);
@@ -27,6 +25,25 @@ export default function RadialScreen({ filters, onBack }) {
       setActiveAmenaza(null);
     }
   }, []);
+
+  const descargarMatriz = () => {
+    fetch('/boton2.pdf')
+      .then(r => {
+        if (!r.ok) throw new Error(`No se encontró el archivo (${r.status})`);
+        return r.blob();
+      })
+      .then(b => {
+        const u = URL.createObjectURL(b);
+        const a = document.createElement('a');
+        a.href = u;
+        a.download = 'matriz-estrategica.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(u);
+      })
+      .catch(err => alert('Error al descargar: ' + err.message));
+  };
 
   return (
     <div className="h-screen flex flex-col bg-dash-bg">
@@ -105,7 +122,7 @@ export default function RadialScreen({ filters, onBack }) {
           </div>
 
           <button
-            onClick={() => setShowMatrix(true)}
+            onClick={descargarMatriz}
             disabled={!allRevealed}
             className={`w-full mt-8 py-4 text-base font-bold uppercase tracking-wider rounded-xl border-2 transition-all ${
               allRevealed
@@ -113,7 +130,7 @@ export default function RadialScreen({ filters, onBack }) {
                 : 'bg-dash-bg text-dash-muted/40 border-dash-border cursor-not-allowed'
             }`}
           >
-            GENERAR MATRIZ
+            DESCARGAR MATRIZ
           </button>
         </aside>
       </div>
@@ -128,10 +145,6 @@ export default function RadialScreen({ filters, onBack }) {
           </svg>
         </button>
       </div>
-
-      {showMatrix && (
-        <MatrixModal filters={filters} onClose={() => setShowMatrix(false)} />
-      )}
     </div>
   );
 }

@@ -17,6 +17,7 @@ const zonas = [
   { id: 'z11', label: 'Purús (Ucayali)', color: '#a855f7', coords: [-70.75, -9.80] },
   { id: 'z12', label: 'Iñapari (Madre de Dios)', color: '#06b6d4', coords: [-69.57, -10.95] },
   { id: 'z13', label: 'La Yarada Los Palos (Tacna)', color: '#22c55e', coords: [-70.54, -18.18] },
+  { id: 'z14', label: 'Puno (Lago Titicaca)', color: '#ec4899', coords: [-69.8, -15.8] },
 ];
 
 export default function AreaScreen({ onNavigate, onAreaSelect }) {

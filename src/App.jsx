@@ -12,7 +12,29 @@ function buildDefaultFilters() {
   for (const cat of categories) {
     f[cat.id] = {};
     for (const item of cat.items) {
-      f[cat.id][item.id] = false;
+      const idNum = parseInt(item.id.replace(/\D/g, ''), 10);
+      switch (cat.id) {
+        case 'mt':
+          f[cat.id][item.id] = idNum <= 8;
+          break;
+        case 'tn':
+          f[cat.id][item.id] = idNum <= 9;
+          break;
+        case 'tin':
+          f[cat.id][item.id] = idNum <= 9;
+          break;
+        case 'ts':
+          f[cat.id][item.id] = idNum <= 7;
+          break;
+        case 'r':
+          f[cat.id][item.id] = idNum <= 5;
+          break;
+        case 'a':
+          f[cat.id][item.id] = idNum <= 5;
+          break;
+        default:
+          f[cat.id][item.id] = false;
+      }
     }
   }
   return f;
@@ -114,7 +136,7 @@ function App() {
         />
       )}
       {screen === 'radial' && (
-        <RadialScreen filters={filters} onBack={() => setScreen('filters')} />
+        <RadialScreen filters={filters} onBack={() => setScreen('home')} />
       )}
       {screen === 'interests' && (
         <InterestSelection
@@ -125,7 +147,7 @@ function App() {
       {screen === 'quantitative-matrix' && (
         <QuantitativeMatrix
           intereses={intereses}
-          onBack={() => setScreen('interests')}
+          onBack={() => setScreen('home')}
         />
       )}
     </>

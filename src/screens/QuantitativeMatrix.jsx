@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, Fragment } from 'react';
 import { amenazasCaracterizadas } from '../data';
 
 const columnHeaders = [
@@ -179,8 +179,10 @@ export default function QuantitativeMatrix({ intereses, onBack }) {
   };
 
   const downloadPDF = async () => {
-    const { default: jsPDF } = await import('jspdf');
-    await import('jspdf-autotable');
+    const [{ jsPDF }, { autoTable }] = await Promise.all([
+      import('jspdf'),
+      import('jspdf-autotable'),
+    ]);
     const doc = new jsPDF({ unit: 'mm', format: 'a3', orientation: 'landscape' });
     const pageW = doc.internal.pageSize.getWidth();
     const title = 'Matriz de Riesgo y Tamizaje';
@@ -215,7 +217,7 @@ export default function QuantitativeMatrix({ intereses, onBack }) {
       body.push(partialRow);
     }
 
-    doc.autoTable({
+    autoTable(doc, {
       head: [head],
       body,
       startY: 20,
@@ -256,13 +258,13 @@ export default function QuantitativeMatrix({ intereses, onBack }) {
           <table className="w-full border-collapse text-xs">
             <thead>
               <tr>
-                <th className="text-left px-3 py-2.5 text-dash-muted uppercase tracking-wider font-semibold border-b border-dash-border bg-dash-surface/50 sticky top-0 z-10 min-w-[200px]">
+                <th className="text-left px-4 py-3 text-dash-muted uppercase tracking-wider font-semibold border-b border-dash-border bg-dash-surface/50 sticky top-0 z-10 min-w-[220px]">
                   Interés / Amenaza
                 </th>
                 {columnHeaders.map((h) => (
                   <th
                     key={h}
-                    className="px-3 py-2.5 text-dash-muted uppercase tracking-wider font-semibold border-b border-dash-border bg-dash-surface/50 sticky top-0 z-10 text-center min-w-[90px]"
+                    className="px-4 py-3 text-dash-muted uppercase tracking-wider font-semibold border-b border-dash-border bg-dash-surface/50 sticky top-0 z-10 text-center min-w-[100px]"
                   >
                     {h}
                   </th>
@@ -271,7 +273,7 @@ export default function QuantitativeMatrix({ intereses, onBack }) {
             </thead>
             <tbody>
               {matrixData.map((inBlock) => (
-                <>
+                <Fragment key={`in-block-${inBlock.inIdx}`}>
                   <tr key={`in-header-${inBlock.inIdx}`}>
                     <td
                       colSpan={7}
@@ -291,7 +293,7 @@ export default function QuantitativeMatrix({ intereses, onBack }) {
                       key={`in${inBlock.inIdx}-a${aIdx}`}
                       className="hover:bg-white/5 transition-colors"
                     >
-                      <td className="px-3 py-2 border-b border-dash-border/50 text-dash-text font-medium">
+                      <td className="px-4 py-3 border-b border-dash-border/50 text-dash-text font-medium">
                         <span className="text-ring-0">A{aIdx + 1}</span>{' '}
                         <span className="text-dash-muted text-[10px]">
                           {amenazasCaracterizadas[aIdx].nombre.length > 50
@@ -310,14 +312,14 @@ export default function QuantitativeMatrix({ intereses, onBack }) {
                         return (
                           <td
                             key={cIdx}
-                            className="px-3 py-2 text-center border-b border-dash-border/50"
+                            className="px-4 py-3 text-center border-b border-dash-border/50"
                           >
                             {revealed ? (
-                              <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-ring-0/20 text-ring-0 text-xs font-bold">
+                              <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-ring-0/20 text-ring-0 text-sm font-bold">
                                 {val}
                               </span>
                             ) : (
-                              <span className="text-dash-muted/20">—</span>
+                              <span className="text-dash-muted/20 text-sm">—</span>
                             )}
                           </td>
                         );
@@ -326,28 +328,28 @@ export default function QuantitativeMatrix({ intereses, onBack }) {
                   ))}
 
                   <tr className="bg-dash-surface/40">
-                    <td className="px-3 py-2 border-b border-dash-border/50 text-dash-muted text-[10px] font-semibold uppercase tracking-wider">
+                    <td className="px-4 py-3 border-b border-dash-border/50 text-dash-muted text-[10px] font-semibold uppercase tracking-wider">
                       Parcial IN {inBlock.inIdx + 1}
                     </td>
                     {inBlock.partial.map((val, cIdx) => {
                       const revealed = cellRevealed(inBlock.inIdx, 'partial', 0, cIdx);
                       return (
-                        <td
-                          key={cIdx}
-                          className="px-3 py-2 text-center border-b border-dash-border/50"
-                        >
-                          {revealed ? (
-                            <span className="inline-flex items-center justify-center w-8 h-7 rounded bg-[#f97316]/20 text-[#f97316] text-xs font-bold">
-                              {val.toFixed(1)}
-                            </span>
-                          ) : (
-                            <span className="text-dash-muted/20">—</span>
-                          )}
-                        </td>
+                    <td
+                            key={cIdx}
+                            className="px-4 py-3 text-center border-b border-dash-border/50"
+                          >
+                            {revealed ? (
+                              <span className="inline-flex items-center justify-center w-9 h-9 rounded bg-[#f97316]/20 text-[#f97316] text-sm font-bold">
+                                {val.toFixed(1)}
+                              </span>
+                            ) : (
+                              <span className="text-dash-muted/20 text-sm">—</span>
+                            )}
+                          </td>
                       );
                     })}
                   </tr>
-                </>
+                </Fragment>
               ))}
             </tbody>
           </table>

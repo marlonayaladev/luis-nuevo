@@ -179,7 +179,7 @@ export default function QuantitativeMatrix({ intereses, onBack }) {
   };
 
   const downloadPDF = () => {
-    fetch('/boton2.pdf')
+    fetch('/Analisis_cuantitativo_cualitativo.pdf')
       .then(r => {
         if (!r.ok) throw new Error(`No se encontró el archivo (${r.status})`);
         return r.blob();
@@ -188,7 +188,7 @@ export default function QuantitativeMatrix({ intereses, onBack }) {
         const u = URL.createObjectURL(b);
         const a = document.createElement('a');
         a.href = u;
-        a.download = 'boton2.pdf';
+        a.download = 'Analisis_cuantitativo_cualitativo.pdf';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);

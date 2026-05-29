@@ -164,7 +164,7 @@ export default function MatrixModal({ filters, onClose }) {
 
         <div className="flex items-center justify-center px-6 py-4 border-t border-dash-border shrink-0 gap-4">
           <button
-            onClick={() => descargarPDF('boton1.pdf')}
+            onClick={() => descargarPDF('matriz.pdf')}
             className="px-6 py-3 text-sm font-bold uppercase tracking-wider bg-[#3b82f6] text-white border-2 border-[#2563eb] rounded-xl hover:bg-[#2563eb] transition-all"
           >
             DESCARGAR PDF
@@ -178,7 +178,7 @@ export default function MatrixModal({ filters, onClose }) {
             </button>
           )}
           <button
-            onClick={() => descargarPDF('boton2.pdf')}
+            onClick={() => descargarPDF('Analisis_cuantitativo_cualitativo.pdf')}
             className="px-6 py-3 text-sm font-bold uppercase tracking-wider bg-[#22c55e] text-white border-2 border-[#16a34a] rounded-xl hover:bg-[#16a34a] transition-all"
           >
             DESCARGAR MATRIZ

@@ -27,7 +27,7 @@ export default function RadialScreen({ filters, onBack }) {
   }, []);
 
   const descargarMatriz = () => {
-    fetch('/boton1.pdf')
+    fetch('/matriz.pdf')
       .then(r => {
         if (!r.ok) throw new Error(`No se encontró el archivo (${r.status})`);
         return r.blob();
@@ -36,7 +36,7 @@ export default function RadialScreen({ filters, onBack }) {
         const u = URL.createObjectURL(b);
         const a = document.createElement('a');
         a.href = u;
-        a.download = 'boton1.pdf';
+        a.download = 'matriz.pdf';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
